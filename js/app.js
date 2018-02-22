@@ -25,27 +25,37 @@ function Product(name, filepath) {
   Product.allProducts.push(this);
 }
 
-//make new Product instances
-new Product('bag', 'img/bag.jpg');
-new Product('banana', 'img/banana.jpg');
-new Product('bathroom', 'img/bathroom.jpg');
-new Product('boots', 'img/boots.jpg');
-new Product('breakfast', 'img/breakfast.jpg');
-new Product('bubblegum', 'img/bubblegum.jpg');
-new Product('chair', 'img/chair.jpg');
-new Product('cthulhu', 'img/cthulhu.jpg');
-new Product('dog-duck', 'img/dog-duck.jpg');
-new Product('dragon', 'img/dragon.jpg');
-new Product('pen', 'img/pen.jpg');
-new Product('petSweep', 'img/pet-sweep.jpg');
-new Product('scissors', 'img/scissors.jpg');
-new Product('shark', 'img/shark.jpg');
-new Product('sweep', 'img/sweep.png');
-new Product('tauntaun', 'img/tauntaun.jpg');
-new Product('unicorn', 'img/unicorn.jpg');
-new Product('water-can', 'img/water-can.jpg');
-new Product('wine-glass', 'img/wine-glass.jpg');
-new Product('usb', 'img/usb.png');
+function checkStorage() {
+//check if there's anything in local storage AND ...
+//localStorage.getItem('allOfProducts') instead of localStorage.allOfProducts - another way
+  if(localStorage && localStorage.allOfProducts) {
+    var stringifyProducts = localStorage.getItem('allOfProducts');
+    Product.allProducts = JSON.parse(stringifyProducts);
+  } 
+  else {
+    new Product('bag', 'img/bag.jpg');
+    new Product('banana', 'img/banana.jpg');
+    new Product('bathroom', 'img/bathroom.jpg');
+    new Product('boots', 'img/boots.jpg');
+    new Product('breakfast', 'img/breakfast.jpg');
+    new Product('bubblegum', 'img/bubblegum.jpg');
+    new Product('chair', 'img/chair.jpg');
+    new Product('cthulhu', 'img/cthulhu.jpg');
+    new Product('dog-duck', 'img/dog-duck.jpg');
+    new Product('dragon', 'img/dragon.jpg');
+    new Product('pen', 'img/pen.jpg');
+    new Product('petSweep', 'img/pet-sweep.jpg');
+    new Product('scissors', 'img/scissors.jpg');
+    new Product('shark', 'img/shark.jpg');
+    new Product('sweep', 'img/sweep.png');
+    new Product('tauntaun', 'img/tauntaun.jpg');
+    new Product('unicorn', 'img/unicorn.jpg');
+    new Product('water-can', 'img/water-can.jpg');
+    new Product('wine-glass', 'img/wine-glass.jpg');
+    new Product('usb', 'img/usb.png');
+    //make new Product instances
+  } 
+}  
 
 function makeRandom() {
   return Math.floor(Math.random() * Product.names.length);
@@ -58,7 +68,6 @@ function displayPics() {
       Product.viewed.push(random);
     }
   }
-  
   for(var i = 0; i < 3; i++) {
     var temp = Product.viewed.shift();
     Product.pics[i].src = Product.allProducts[temp].filepath;
@@ -72,13 +81,14 @@ function handleClick(event) {
   if(event.target === Product.container) {
     return alert('click on an image');
   }
-
   if(Product.counter > 24) {
     Product.container.removeEventListener('click', handleClick);
     Product.container.style.display = 'none';
     makeChart();
+    //stringify entire Product object. On page re-load, how can this be saved?
+    //
+    localStorage.setItem('allOfProducts', JSON.stringify(Product.allProducts)); 
   }
-
   Product.counter += 1;
   for(var i = 0; i < Product.names.length; i++) {
     if(event.target.alt === Product.allProducts[i].name) {
@@ -88,66 +98,69 @@ function handleClick(event) {
   displayPics();
 }
 
-displayPics();
-Product.container.addEventListener('click', handleClick );
-
 //chart
 function makeChart() {
+  // console.table(Product.allProducts);
   var votes = [];
   for(var i = 0; i < Product.allProducts.length; i++) {
     votes[i] = Product.allProducts[i].votes;
   }
-  var ctx = document.getElementById("myChart").getContext('2d');
-  var myChart = new Chart(ctx, {
-    type: 'bar',
+  var ctx = document.getElementById("productChart").getContext('2d');
+  Chart.defaults.global.defaultFontColor = 'rgb(16, 2, 65)';
+  var productChart = new Chart(ctx, {
+    type: 'horizontalBar',
     data: {
       labels: Product.names,
       datasets: [{
         label: '# of Votes',
         data: votes,
-        backgroundColor: [
-          'rgb(250, 246, 8)',
-          'rgb(250, 246, 8)',
-          'rgb(250, 246, 8)',
-          'rgb(250, 246, 8)',
-          'rgb(250, 246, 8)',
-          'rgb(250, 246, 8)'
-        ],
-        borderColor: [
-          'rgb(78, 77, 6)',
-          'rgb(78, 77, 6)',
-          'rgb(78, 77, 6)',
-          'rgb(78, 77, 6)',
-          'rgb(78, 77, 6)',
-          'rgb(78, 77, 6)'
-        ],
+        backgroundColor: 'rgb(250, 246, 8)',
+        borderColor: 'rgb(78, 77, 6)',
         borderWidth: 2
       }]
     },
     options: {
+      title: {
+        fontSize: 20
+      },
+      legend: {
+        labels: {
+          fontColor: 'rgb(16, 2, 65)',
+          fontSize: 20
+        }
+      },
       scales: {
         yAxes: [{
           ticks: {
-            beginAtZero:true
+            fontSize: 20
+          }
+        }],
+        xAxes: [{
+          ticks: {
+            fontSize: 20
           }
         }]
       }
     }
   });
 }
+checkStorage();
+displayPics();
+Product.container.addEventListener('click', handleClick );
+
 
 // console.log(event.target.alt + ' has ' + Product.allProducts[i].votes + ' votes in ' + Product.allProducts[i].views + 'views');
 // function showList() {
-//   for(var i = 0; i < Product.allProducts.length; i++) {
-//     var liEl = document.createElement('li');
-//     var conversion = (Product.allProducts[i].votes / Product.allProducts[i].views * 100).toFixed(1);
-//     liEl.textContent = Product.allProducts[i].name + ' has ' + Product.allProducts[i].votes + ' votes in ' + Product.allProducts[i].views + ' views for a conversion rate of ' + conversion + '%';
-
-//     if(conversion > 49) {
-//       liEl.style.color = 'white';
-//       liEl.style.backgroundColor = 'green';
-//     }
-
+  //   for(var i = 0; i < Product.allProducts.length; i++) {
+    //     var liEl = document.createElement('li');
+    //     var conversion = (Product.allProducts[i].votes / Product.allProducts[i].views * 100).toFixed(1);
+    //     liEl.textContent = Product.allProducts[i].name + ' has ' + Product.allProducts[i].votes + ' votes in ' + Product.allProducts[i].views + ' views for a conversion rate of ' + conversion + '%';
+    
+    //     if(conversion > 49) {
+      //       liEl.style.color = 'white';
+      //       liEl.style.backgroundColor = 'green';
+      //     }
+      
 //     if(conversion < 30) {
 //       liEl.style.color = 'white';
 //       liEl.style.backgroundColor = 'red';
