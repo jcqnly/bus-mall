@@ -81,6 +81,8 @@ function handleClick(event) {
   if(event.target === Product.container) {
     return alert('click on an image');
   }
+  Product.counter += 1;
+  // console.log(Product.counter);
   if(Product.counter > 24) {
     Product.container.removeEventListener('click', handleClick);
     Product.container.style.display = 'none';
@@ -89,7 +91,6 @@ function handleClick(event) {
     //
     localStorage.setItem('allOfProducts', JSON.stringify(Product.allProducts)); 
   }
-  Product.counter += 1;
   for(var i = 0; i < Product.names.length; i++) {
     if(event.target.alt === Product.allProducts[i].name) {
       Product.allProducts[i].votes += 1;
