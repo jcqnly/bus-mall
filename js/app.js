@@ -133,14 +133,14 @@ function makeChart() {
         yAxes: [{
           ticks: {
             fontSize: 20,
-            callback: function(value) {
-              return Number(value).toFixed(0);
-            }
           }
         }],
         xAxes: [{
           ticks: {
-            fontSize: 20
+            fontSize: 20,
+            callback: function(value) {
+              return Number(value).toFixed(0);
+            }
           }
         }]
       }
