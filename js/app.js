@@ -58,7 +58,6 @@ function displayPics() {
       Product.viewed.push(random);
     }
   }
-  
   for(var i = 0; i < 3; i++) {
     var temp = Product.viewed.shift();
     Product.pics[i].src = Product.allProducts[temp].filepath;
@@ -97,7 +96,7 @@ function makeChart() {
   for(var i = 0; i < Product.allProducts.length; i++) {
     votes[i] = Product.allProducts[i].votes;
   }
-  var ctx = document.getElementById("myChart").getContext('2d');
+  var ctx = document.getElementById('myChart').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -135,23 +134,3 @@ function makeChart() {
     }
   });
 }
-
-// console.log(event.target.alt + ' has ' + Product.allProducts[i].votes + ' votes in ' + Product.allProducts[i].views + 'views');
-// function showList() {
-//   for(var i = 0; i < Product.allProducts.length; i++) {
-//     var liEl = document.createElement('li');
-//     var conversion = (Product.allProducts[i].votes / Product.allProducts[i].views * 100).toFixed(1);
-//     liEl.textContent = Product.allProducts[i].name + ' has ' + Product.allProducts[i].votes + ' votes in ' + Product.allProducts[i].views + ' views for a conversion rate of ' + conversion + '%';
-
-//     if(conversion > 49) {
-//       liEl.style.color = 'white';
-//       liEl.style.backgroundColor = 'green';
-//     }
-
-//     if(conversion < 30) {
-//       liEl.style.color = 'white';
-//       liEl.style.backgroundColor = 'red';
-//     }
-//     Product.list.appendChild(liEl);
-//   }
-// }
