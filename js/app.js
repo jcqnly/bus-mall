@@ -31,7 +31,7 @@ function checkStorage() {
   if(localStorage && localStorage.allOfProducts) {
     var stringifyProducts = localStorage.getItem('allOfProducts');
     Product.allProducts = JSON.parse(stringifyProducts);
-  } 
+  }
   else {
     new Product('bag', 'img/bag.jpg');
     new Product('banana', 'img/banana.jpg');
@@ -54,8 +54,8 @@ function checkStorage() {
     new Product('wine-glass', 'img/wine-glass.jpg');
     new Product('usb', 'img/usb.png');
     //make new Product instances
-  } 
-}  
+  }
+}
 
 function makeRandom() {
   return Math.floor(Math.random() * Product.names.length);
@@ -81,15 +81,15 @@ function handleClick(event) {
   if(event.target === Product.container) {
     return alert('click on an image');
   }
+  Product.counter += 1;
+  // console.log(Product.counter);
   if(Product.counter > 24) {
     Product.container.removeEventListener('click', handleClick);
     Product.container.style.display = 'none';
     makeChart();
-    //stringify entire Product object. On page re-load, how can this be saved?
-    //
-    localStorage.setItem('allOfProducts', JSON.stringify(Product.allProducts)); 
+    //stringify entire Product object
+    localStorage.setItem('allOfProducts', JSON.stringify(Product.allProducts));
   }
-  Product.counter += 1;
   for(var i = 0; i < Product.names.length; i++) {
     if(event.target.alt === Product.allProducts[i].name) {
       Product.allProducts[i].votes += 1;
@@ -105,9 +105,9 @@ function makeChart() {
   for(var i = 0; i < Product.allProducts.length; i++) {
     votes[i] = Product.allProducts[i].votes;
   }
-  var ctx = document.getElementById("productChart").getContext('2d');
+  var ctx = document.getElementById('productChart').getContext('2d');
   Chart.defaults.global.defaultFontColor = 'rgb(16, 2, 65)';
-  var productChart = new Chart(ctx, {
+  new Chart(ctx, {
     type: 'horizontalBar',
     data: {
       labels: Product.names,
@@ -147,24 +147,3 @@ function makeChart() {
 checkStorage();
 displayPics();
 Product.container.addEventListener('click', handleClick );
-
-
-// console.log(event.target.alt + ' has ' + Product.allProducts[i].votes + ' votes in ' + Product.allProducts[i].views + 'views');
-// function showList() {
-  //   for(var i = 0; i < Product.allProducts.length; i++) {
-    //     var liEl = document.createElement('li');
-    //     var conversion = (Product.allProducts[i].votes / Product.allProducts[i].views * 100).toFixed(1);
-    //     liEl.textContent = Product.allProducts[i].name + ' has ' + Product.allProducts[i].votes + ' votes in ' + Product.allProducts[i].views + ' views for a conversion rate of ' + conversion + '%';
-    
-    //     if(conversion > 49) {
-      //       liEl.style.color = 'white';
-      //       liEl.style.backgroundColor = 'green';
-      //     }
-      
-//     if(conversion < 30) {
-//       liEl.style.color = 'white';
-//       liEl.style.backgroundColor = 'red';
-//     }
-//     Product.list.appendChild(liEl);
-//   }
-// }
