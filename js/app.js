@@ -14,7 +14,7 @@ Product.pics = [
   document.getElementById('center'),
   document.getElementById('right'),
 ];
-Product.list = document.getElementById('productLists');
+Product.list = document.getElementById('productList');
 
 //make an object of Bus Mall Products
 function Product(name, filepath) {
@@ -77,14 +77,22 @@ function handleClick(event) {
   if(Product.counter > 24) {
     Product.container.removeEventListener('click', handleClick);
     Product.container.style.display = 'none';
+    productList();
   }
   for(var i = 0; i < Product.names.length; i++) {
     if(event.target.alt === Product.allProducts[i].name) {
       Product.allProducts[i].votes += 1;
-      console.log(Product.allProducts[i].name + ' was clicked');
     }
   }
   displayPics();
+}
+
+function productList() {
+  for(var i = 0; i < Product.allProducts.length; i++) {
+    var liEl = document.createElement('li');
+    liEl.textContent = Product.allProducts[i].name + ' has ' + Product.allProducts[i].views + ' views and ' + Product.allProducts[i].votes + ' votes at a rate of ' + Math.round((Product.allProducts[i].votes/Product.allProducts[i].views * 100)) + '%';
+    Product.list.appendChild(liEl);
+  }
 }
 
 displayPics();
