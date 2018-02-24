@@ -81,6 +81,7 @@ function handleClick(event) {
   for(var i = 0; i < Product.names.length; i++) {
     if(event.target.alt === Product.allProducts[i].name) {
       Product.allProducts[i].votes += 1;
+      console.log(Product.allProducts[i].name + ' was clicked');
     }
   }
   displayPics();
