@@ -71,14 +71,14 @@ function handleClick(event) {
   if(event.target === Product.container) {
     return alert('click on an image');
   }
+  Product.counter += 1;
+  console.log(Product.counter);
 
   if(Product.counter > 24) {
     Product.container.removeEventListener('click', handleClick);
     Product.container.style.display = 'none';
     makeChart();
   }
-
-  Product.counter += 1;
   for(var i = 0; i < Product.names.length; i++) {
     if(event.target.alt === Product.allProducts[i].name) {
       Product.allProducts[i].votes += 1;
@@ -97,7 +97,7 @@ function makeChart() {
     votes[i] = Product.allProducts[i].votes;
   }
   var ctx = document.getElementById('myChart').getContext('2d');
-  var myChart = new Chart(ctx, {
+  new Chart(ctx, {
     type: 'bar',
     data: {
       labels: Product.names,
