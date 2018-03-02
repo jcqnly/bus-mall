@@ -78,22 +78,23 @@ function displayPics() {
 }
 
 function handleClick(event) {
+  // console.log(Product.counter);
   if(event.target === Product.container) {
     return alert('click on an image');
   }
   Product.counter += 1;
-  // console.log(Product.counter);
-  if(Product.counter > 24) {
+  console.log(Product.counter);
+  for(var i = 0; i < Product.names.length; i++) {
+    if(event.target.alt === Product.allProducts[i].name) {
+      Product.allProducts[i].votes += 1;
+    }
+  }
+  if(Product.counter >= 25) {
     Product.container.removeEventListener('click', handleClick);
     Product.container.style.display = 'none';
     makeChart();
     //stringify entire Product object
     localStorage.setItem('allOfProducts', JSON.stringify(Product.allProducts));
-  }
-  for(var i = 0; i < Product.names.length; i++) {
-    if(event.target.alt === Product.allProducts[i].name) {
-      Product.allProducts[i].votes += 1;
-    }
   }
   displayPics();
 }
@@ -137,7 +138,8 @@ function makeChart() {
         }],
         xAxes: [{
           ticks: {
-            fontSize: 20
+            fontSize: 20,
+            stepSize: 1
           }
         }]
       }
